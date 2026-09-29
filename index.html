@@ -55,13 +55,14 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14p
 .badge{position:absolute;top:3px;left:3px;width:13px;height:13px;border-radius:50%;background:var(--ink-strong);color:var(--bg);font:500 8px/13px var(--body);text-align:center}
 .row-label{text-align:center;font-size:12px;font-weight:500;color:var(--ink);margin:0}
 .count{color:var(--muted);font-weight:400;font-size:11.5px;margin-left:6px;font-variant-numeric:tabular-nums}
-.actions{margin-top:18px;width:min(100%,440px);justify-self:center;display:flex;flex-wrap:wrap;gap:8px}
+.actions{display:none;margin-top:18px;width:min(100%,440px);justify-self:center;flex-wrap:wrap;gap:8px}
 .buy{flex:1 1 160px;padding:15px 12px;border:0;border-radius:14px;background:var(--btn);color:var(--ink-strong);
   font:500 14px var(--body);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.04),0 4px 14px rgba(0,0,0,.05)}
 .buy.primary{background:var(--ink-strong);color:var(--bg)}
 .buy:hover{box-shadow:0 1px 2px rgba(0,0,0,.06),0 6px 18px rgba(0,0,0,.08)}
 :root[data-bg="white"] .buy:not(.primary){box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
-.notice{text-align:center;font-size:12.5px;color:var(--muted);min-height:1.5em;margin:0}
+:root.with-buttons .actions{display:flex}
+.notice{text-align:center;font-size:12.5px;color:var(--muted);min-height:1.5em;margin:4px 0 0}
 button:focus-visible{outline:1.5px solid var(--ink-strong);outline-offset:2px}
 @media (max-width:520px){.tile{flex-basis:48px;width:48px;height:48px}.track{padding-inline:calc(50% - 24px)}#charmTrack{padding-inline:2px}
   .carousel{grid-template-columns:22px minmax(0,268px) 22px;gap:2px}.arrow{width:22px}}
@@ -134,6 +135,7 @@ const src=f=>'img/'+f+'.webp';
 const MAX=3, DUR=[2.8,3.4,3.1];
 let state={item:1,charms:[2,7]};
 const $=id=>document.getElementById(id);
+try{if(new URLSearchParams(location.search).has('buttons'))document.documentElement.classList.add('with-buttons')}catch(e){}
 const names=()=>state.charms.map(i=>CHARMS[i].name).join(' + ');
 const reduceMotion=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 
