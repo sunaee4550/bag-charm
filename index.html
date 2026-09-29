@@ -1,0 +1,222 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="margin:0">
+<title>가방&amp;키링 조합</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#F4F5F7; --tile:#EEEFF2; --ink:#5B4D48; --ink-strong:#3F3431; --muted:#9A908C; --btn:#FFFFFF; --edge:rgba(0,0,0,.07);
+  --body:"Noto Sans KR",system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --bg:#16171A; --tile:#1E1F23; --ink:#CFC5C1; --ink-strong:#EDE6E3; --muted:#857C79; --btn:#24252A; --edge:rgba(255,255,255,.12);}
+}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#16171A; --tile:#1E1F23; --ink:#CFC5C1; --ink-strong:#EDE6E3; --muted:#857C79; --btn:#24252A; --edge:rgba(255,255,255,.12);}
+/* 배경 미리보기 전환 (기본 = 기기 설정을 따름) */
+:root[data-bg="white"]{color-scheme:light;--bg:#FFFFFF;--tile:#EEEFF2; --ink:#5B4D48; --ink-strong:#3F3431; --muted:#9A908C; --btn:#FFFFFF; --edge:rgba(0,0,0,.07); --tile:#F3F3F5;}
+:root[data-bg="black"]{color-scheme:dark;--bg:#16171A; --tile:#1E1F23; --ink:#CFC5C1; --ink-strong:#EDE6E3; --muted:#857C79; --btn:#24252A; --edge:rgba(255,255,255,.12);}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:640px;margin:0 auto;padding-inline:16px;padding-block:12px 40px;display:grid;gap:14px;justify-items:center}
+.wrap>*{width:100%}
+
+.stage{position:relative;height:clamp(260px,46vh,540px);overflow:hidden}
+.stage .bag{position:absolute;display:block;max-width:none;user-select:none;-webkit-user-drag:none}
+.stage .charm{position:absolute;display:block;max-width:none;user-select:none;-webkit-user-drag:none;
+  transform:rotate(var(--r,0deg));animation:swing var(--d,3s) ease-in-out infinite alternate;animation-delay:var(--dl,0s);
+  filter:drop-shadow(0 3px 4px rgba(0,0,0,.12))}
+@keyframes swing{from{transform:rotate(calc(var(--r,0deg) - 2.5deg))}to{transform:rotate(calc(var(--r,0deg) + 2.5deg))}}
+
+.caption{text-align:center;font-size:14px;color:var(--ink);margin:0 0 20px;letter-spacing:-.01em;text-wrap:balance}
+.bgpick{display:flex;justify-content:flex-end}
+.bgpick .seg{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:var(--tile);box-shadow:inset 0 0 0 1px var(--edge)}
+.bgpick button{display:grid;place-items:center;width:28px;height:22px;border:0;background:none;border-radius:999px;cursor:pointer;transition:background .15s,box-shadow .15s}
+.bgpick button[aria-pressed="true"]{background:var(--ink-strong)}
+.bgpick i{width:11px;height:11px;border-radius:50%;box-shadow:0 0 0 1px rgba(128,128,128,.55)}
+.bgpick [data-bg="auto"] i{background:linear-gradient(90deg,#fff 50%,#16171A 50%)}
+.bgpick [data-bg="white"] i{background:#fff}
+.bgpick [data-bg="black"] i{background:#16171A}
+.bgpick button[aria-pressed="true"] i{box-shadow:0 0 0 1.5px var(--bg)}
+.row{display:grid;gap:5px}
+.row+.row{margin-top:14px}
+.carousel{display:grid;grid-template-columns:24px minmax(0,298px) 24px;justify-content:center;align-items:center;gap:6px}
+.arrow{width:24px;height:24px;border:0;background:none;color:var(--ink-strong);cursor:pointer;display:grid;place-items:center;padding:0;border-radius:50%}
+.arrow:hover{background:var(--tile)}
+.arrow svg{width:14px;height:14px}
+.track{position:relative;display:flex;gap:6px;overflow-x:auto;scroll-behavior:smooth;scrollbar-width:none;padding:2px calc(50% - 27px)}
+.track::-webkit-scrollbar{display:none}
+#charmTrack{padding:2px;justify-content:safe center}
+.tile{position:relative;flex:0 0 54px;width:54px;height:54px;padding:5px;border:1px solid transparent;border-radius:8px;background:var(--tile);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s}
+.tile:hover{border-color:var(--edge)}
+.tile[aria-pressed="true"]{border-color:var(--ink-strong)}
+.tile img{display:block;max-width:100%;max-height:100%;width:auto;height:auto}
+.badge{position:absolute;top:3px;left:3px;width:13px;height:13px;border-radius:50%;background:var(--ink-strong);color:var(--bg);font:500 8px/13px var(--body);text-align:center}
+.row-label{text-align:center;font-size:12px;font-weight:500;color:var(--ink);margin:0}
+.count{color:var(--muted);font-weight:400;font-size:11.5px;margin-left:6px;font-variant-numeric:tabular-nums}
+.actions{margin-top:18px;width:min(100%,440px);justify-self:center;display:flex;flex-wrap:wrap;gap:8px}
+.buy{flex:1 1 160px;padding:15px 12px;border:0;border-radius:14px;background:var(--btn);color:var(--ink-strong);
+  font:500 14px var(--body);cursor:pointer;box-shadow:0 1px 2px rgba(0,0,0,.04),0 4px 14px rgba(0,0,0,.05)}
+.buy.primary{background:var(--ink-strong);color:var(--bg)}
+.buy:hover{box-shadow:0 1px 2px rgba(0,0,0,.06),0 6px 18px rgba(0,0,0,.08)}
+:root[data-bg="white"] .buy:not(.primary){box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.notice{text-align:center;font-size:12.5px;color:var(--muted);min-height:1.5em;margin:0}
+button:focus-visible{outline:1.5px solid var(--ink-strong);outline-offset:2px}
+@media (max-width:520px){.tile{flex-basis:48px;width:48px;height:48px}.track{padding-inline:calc(50% - 24px)}#charmTrack{padding-inline:2px}
+  .carousel{grid-template-columns:22px minmax(0,268px) 22px;gap:2px}.arrow{width:22px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.track{scroll-behavior:auto}.stage .charm{animation:none}}
+</style>
+
+<div class="wrap">
+  <div class="bgpick" role="group" aria-label="배경 색"><span class="seg"><button type="button" data-bg="auto" aria-label="기본 배경 (기기 설정)" title="기본 (기기 설정)"><i></i></button><button type="button" data-bg="white" aria-label="화이트 배경" title="화이트"><i></i></button><button type="button" data-bg="black" aria-label="블랙 배경" title="블랙"><i></i></button></span></div>
+  <div class="stage" id="stage" role="img"></div>
+  <p class="caption" id="caption"></p>
+
+  <div class="row">
+    <div class="carousel">
+      <button class="arrow" type="button" data-step="-1" data-row="item" aria-label="이전 가방"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+      <div class="track" id="itemTrack" role="group" aria-label="가방"></div>
+      <button class="arrow" type="button" data-step="1" data-row="item" aria-label="다음 가방"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4 6 6-6 6"/></svg></button>
+    </div>
+    <p class="row-label" id="itemLabel"></p>
+  </div>
+
+  <div class="row">
+    <div class="carousel">
+      <button class="arrow" type="button" data-step="-1" data-row="charm" aria-label="키링 목록 왼쪽으로"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12.5 4 6.5 10l6 6"/></svg></button>
+      <div class="track" id="charmTrack" role="group" aria-label="키링"></div>
+      <button class="arrow" type="button" data-step="1" data-row="charm" aria-label="키링 목록 오른쪽으로"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4 6 6-6 6"/></svg></button>
+    </div>
+    <p class="row-label" id="charmLabel"></p>
+  </div>
+
+  <div class="actions">
+    <button class="buy" id="cart" type="button">세트 담기</button>
+    <button class="buy primary" id="buy" type="button">세트 구매하기</button>
+  </div>
+  <p class="notice" id="notice" aria-live="polite"></p>
+
+</div>
+
+<script>
+(function(){
+/* 가방: 모든 사진을 같은 캔버스(794×1026)로 잘라서 원본 속 크기 비율을 그대로 유지.
+   rx/ry = 사진 속 큰 링의 맨 아래 지점, rr = 링 반지름(캔버스 대비 비율). thumb = 썸네일용으로 꽉 채워 자른 이미지 */
+const CANVAS={w:794,h:1026};
+const BAGS=[
+  {file:'bagc1',thumb:'bagr1',name:'데님 숄더백',rx:.784,ry:.699,rr:.0353},
+  {file:'bagc2',thumb:'bagr2',name:'블랙 토트백',rx:.692,ry:.479,rr:.0396},
+  {file:'bagc3',thumb:'bagr3',name:'블랙 포켓 숄더백',rx:.777,ry:.621,rr:.0355},
+  {file:'bagc4',thumb:'bagr4',name:'브라운 탑핸들백',rx:.637,ry:.704,rr:.0395},
+  {file:'bagc5',thumb:'bagr5',name:'브라운 스웨이드 숄더백',rx:.664,ry:.771,rr:.0390},
+  {file:'bagc6',thumb:'bagr6',name:'탄 탑핸들백',rx:.741,ry:.778,rr:.0414},
+  {file:'bagc7',thumb:'bagr7',name:'블랙 호보백',rx:.715,ry:.511,rr:.0410},
+  {file:'bagc8',thumb:'bagr8',name:'베이지 호보백',rx:.738,ry:.592,rr:.0412},
+  {file:'bagc9',thumb:'bagr9',name:'레드 숄더백',rx:.820,ry:.759,rr:.0373},
+];
+/* 키링: hx = 맨 위 고리의 가로 위치(이미지 가로 대비 비율), k = 크기 배율(기본 1) */
+const CHARMS=[
+  {file:'charm_black_cat',name:'블랙 캣',w:322,h:491,hx:.485,k:1.28},
+  {file:'charm_gray_cat',name:'그레이 캣',w:305,h:474,hx:.508,k:1.125},
+  {file:'charm_blue_bear',name:'블루 베어',w:286,h:493,hx:.517,k:1.28},
+  {file:'charm_black_leather_heart',name:'블랙 레더 하트',w:268,h:520,hx:.504,k:.75},
+  {file:'charm_pink_heart_flower',name:'핑크 하트 플라워',w:294,h:520,hx:.487,k:.75},
+  {file:'charm_burgundy_heart_ribbon',name:'버건디 하트 리본',w:309,h:520,hx:.437},
+  {file:'charm_crystal_heart_ribbon',name:'크리스탈 하트 리본',w:463,h:520,hx:.479},
+  {file:'charm_silver_heart_key_star',name:'실버 하트 키 스타',w:279,h:520,hx:.439},
+  {file:'charm_silver_flower',name:'실버 플라워',w:237,h:520,hx:.520},
+  {file:'charm_white_clover',name:'화이트 클로버',w:332,h:520,hx:.301},
+  {file:'charm_silver_music_note',name:'실버 음표',w:323,h:520,hx:.349},
+  {file:'charm_cream_leather_music_note',name:'크림 레더 음표',w:335,h:520,hx:.439},
+];
+const src=f=>'img/'+f+'.webp';
+const MAX=3, DUR=[2.8,3.4,3.1];
+let state={item:1,charms:[2,7]};
+const $=id=>document.getElementById(id);
+const names=()=>state.charms.map(i=>CHARMS[i].name).join(' + ');
+const reduceMotion=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+function layout(){
+  const st=$('stage'), W=st.clientWidth, H=st.clientHeight, bag=BAGS[state.item];
+  if(!W||!H) return;
+  // 모든 가방을 같은 배율로 그림. 링이 가장 낮은 가방에 키링을 달아도 잘리지 않도록 여유 높이(EXT)를 잡음
+  const n=state.charms.length, KH=.175;
+  const EXT=Math.max(1,Math.max(...BAGS.map(b=>b.ry))+.175*Math.max(...CHARMS.map(c=>c.k||1)));
+  const sc=Math.min(H*.98/(CANVAS.h*EXT), W*.95/CANVAS.w), bw=CANVAS.w*sc, bh=CANVAS.h*sc;
+  const bx=(W-bw)/2, by=(H-bh*EXT)/2;
+  const R=bag.rr*bw;                        // 사진 속 링 반지름
+  const cx=bx+bag.rx*bw, cy=by+bag.ry*bh-R; // 링 중심
+  let html=`<img class="bag" src="${src(bag.file)}" alt="" style="left:${bx}px;top:${by}px;width:${bw}px;height:${bh}px">`;
+  // 링 아래쪽 호를 따라 고리를 나눠 걺 (90° = 정중앙 아래)
+  const SPOT={1:[90],2:[68,112],3:[55,90,125]}[n]||[];
+  const TILT={1:[0],2:[-6,6],3:[-10,0,10]}[n]||[];
+  state.charms.forEach((ci,i)=>{
+    const c=CHARMS[ci], ch=bh*KH*(c.k||1), cw=c.w*ch/c.h, t=SPOT[i]*Math.PI/180;
+    const hx=cx+R*Math.cos(t), hy=cy+R*Math.sin(t)-R*.18;
+    const z=10-Math.abs(i-(n-1)/2)*2;
+    html+=`<img class="charm" src="${src(c.file)}" alt="" style="left:${hx-c.hx*cw}px;top:${hy}px;width:${cw}px;height:${ch}px;transform-origin:${c.hx*100}% 0;--r:${TILT[i]}deg;--d:${DUR[i]}s;--dl:${-i*.7}s;z-index:${z}">`;
+  });
+  st.innerHTML=html;
+  st.setAttribute('aria-label',bag.name+(n?', '+names():''));
+}
+
+function buildRows(){
+  $('itemTrack').innerHTML=BAGS.map((b,i)=>`<button class="tile" type="button" data-item="${i}" aria-label="${b.name}"><img src="${src(b.thumb)}" alt=""></button>`).join('');
+  $('charmTrack').innerHTML=CHARMS.map((c,i)=>`<button class="tile" type="button" data-charm="${i}" aria-label="${c.name}"><img src="${src(c.file)}" alt=""></button>`).join('');
+}
+function centre(track,smooth){
+  const el=track.querySelector('[aria-pressed="true"]'); if(!el) return;
+  track.scrollTo({left:el.offsetLeft-(track.clientWidth-el.offsetWidth)/2,behavior:smooth&&!reduceMotion?'smooth':'auto'});
+}
+function render(smooth,centreItems=true){
+  const bag=BAGS[state.item];
+  layout();
+  $('caption').textContent=bag.name+(state.charms.length?' / '+names():'');
+  $('itemLabel').textContent=bag.name;
+  $('charmLabel').innerHTML=(state.charms.length?names():'키링을 골라 주세요')+`<span class="count">${state.charms.length}/${MAX}</span>`;
+  document.querySelectorAll('[data-item]').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.item===state.item));
+  document.querySelectorAll('[data-charm]').forEach(b=>{
+    const k=state.charms.indexOf(+b.dataset.charm);b.setAttribute('aria-pressed',k>-1);
+    const old=b.querySelector('.badge');if(old)old.remove();
+    if(k>-1)b.insertAdjacentHTML('afterbegin',`<span class="badge">${k+1}</span>`);
+  });
+  if(centreItems)centre($('itemTrack'),smooth);
+}
+function setBg(v){
+  if(v==='auto') document.documentElement.removeAttribute('data-bg'); else document.documentElement.setAttribute('data-bg',v);
+  document.querySelectorAll('[data-bg]').forEach(x=>{if(x.tagName==='BUTTON')x.setAttribute('aria-pressed',x.dataset.bg===v)});
+  try{localStorage.setItem('bagcharm-bg',v)}catch(e){}
+}
+let savedBg='auto';try{savedBg=localStorage.getItem('bagcharm-bg')||'auto'}catch(e){}
+setBg(savedBg);
+document.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  if(b.dataset.bg){setBg(b.dataset.bg);return}
+  if(b.dataset.item!==undefined){state.item=+b.dataset.item;$('notice').textContent='';render(true)}
+  else if(b.dataset.charm!==undefined){
+    const c=+b.dataset.charm, k=state.charms.indexOf(c);
+    if(k>-1) state.charms.splice(k,1);
+    else if(state.charms.length>=MAX){$('notice').textContent='키링은 3개까지 달 수 있어요. 뺄 키링을 한 번 더 누르세요.';return}
+    else state.charms.push(c);
+    $('notice').textContent='';render(true,false);
+  }
+  else if(b.dataset.step){
+    const d=+b.dataset.step;
+    if(b.dataset.row==='item'){state.item=(state.item+d+BAGS.length)%BAGS.length;$('notice').textContent='';render(true)}
+    else{const t=$('charmTrack');t.scrollBy({left:d*Math.max(t.clientWidth*.6,100),behavior:reduceMotion?'auto':'smooth'})}
+  }
+  else if(b.id==='cart'){
+    $('notice').textContent=`${BAGS[state.item].name}${state.charms.length?' + '+names():''} 세트를 장바구니에 담았어요. 예시 페이지라 실제 장바구니에는 담기지 않아요.`;
+  }
+  else if(b.id==='buy'){
+    $('notice').textContent=`${BAGS[state.item].name}${state.charms.length?' + '+names():''} 세트를 구매해요. 예시 페이지라 실제 결제는 되지 않아요.`;
+  }
+});
+let lastSize='';
+if(window.ResizeObserver)new ResizeObserver(()=>{const st=$('stage'),k=st.clientWidth+'x'+st.clientHeight;if(k!==lastSize){lastSize=k;layout();centre($('itemTrack'))}}).observe($('stage'));
+else window.addEventListener('resize',()=>{layout();centre($('itemTrack'))});
+buildRows();render(false);
+})();
+</script>
+</body></html>
